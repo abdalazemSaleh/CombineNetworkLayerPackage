@@ -1,5 +1,5 @@
 //
-//  ConfigurationManager.swift
+//  NetworkConfigurationManager.swift
 //  NetworkLayer
 //
 //  Created by Abdalazem Saleh on 06/11/2024.
@@ -7,8 +7,8 @@
 
 import Foundation
 
-class ConfigurationManager: @unchecked Sendable {
-    static let shared = ConfigurationManager()
+public class NetworkConfigurationManager: @unchecked Sendable {
+    static let shared = NetworkConfigurationManager()
     
     private(set) var environment: Environment = .development
     private var baseUrls: [Environment: String] = [:]
