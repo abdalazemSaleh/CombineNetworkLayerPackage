@@ -21,7 +21,7 @@ public protocol EndPoint {
 
 extension EndPoint {
     var baseUrl: String {
-        return ConfigurationManager.shared.getBaseUrl()
+        return NetworkConfigurationManager.shared.getBaseUrl()
     }
 }
 
