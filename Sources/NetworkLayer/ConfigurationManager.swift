@@ -13,11 +13,11 @@ public class NetworkConfigurationManager: @unchecked Sendable {
     private(set) var environment: Environment = .development
     private var baseUrls: [Environment: String] = [:]
     
-    func setEnvironment(_ environment: Environment) {
+    public func setEnvironment(_ environment: Environment) {
         self.environment = environment
     }
     
-    func configureBaseUrls(_ urls: [Environment: String]) {
+    public func configureBaseUrls(_ urls: [Environment: String]) {
         self.baseUrls = urls
     }
     
