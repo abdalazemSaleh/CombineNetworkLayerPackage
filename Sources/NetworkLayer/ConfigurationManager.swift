@@ -8,7 +8,7 @@
 import Foundation
 
 public class NetworkConfigurationManager: @unchecked Sendable {
-    static let shared = NetworkConfigurationManager()
+    public static let shared = NetworkConfigurationManager()
     
     private(set) var environment: Environment = .development
     private var baseUrls: [Environment: String] = [:]
