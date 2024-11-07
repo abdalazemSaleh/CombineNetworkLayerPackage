@@ -21,7 +21,7 @@ public class NetworkConfigurationManager: @unchecked Sendable {
         self.baseURL = url
     }
     
-    func getBaseUrl() -> String {
+    public func getBaseUrl() -> String {
         return baseURL
     }
 }
