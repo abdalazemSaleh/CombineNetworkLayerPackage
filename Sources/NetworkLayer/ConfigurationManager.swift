@@ -11,17 +11,17 @@ public class NetworkConfigurationManager: @unchecked Sendable {
     public static let shared = NetworkConfigurationManager()
     
     private(set) var environment: Environment = .development
-    private var baseUrls: [Environment: String] = [:]
+    private var baseURL: String = ""
     
     public func setEnvironment(_ environment: Environment) {
         self.environment = environment
     }
     
-    public func configureBaseUrls(_ urls: [Environment: String]) {
-        self.baseUrls = urls
+    public func setBaseURL(_ url: String) {
+        self.baseURL = url
     }
     
     func getBaseUrl() -> String {
-        return baseUrls[environment] ?? "default.example.com"
+        return baseURL
     }
 }
