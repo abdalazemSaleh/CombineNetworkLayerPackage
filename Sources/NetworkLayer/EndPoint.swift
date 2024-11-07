@@ -20,8 +20,20 @@ public protocol EndPoint {
 }
 
 extension EndPoint {
-    var baseUrl: String {
-        return NetworkConfigurationManager.shared.getBaseUrl()
+    var baseURL: String {
+        NetworkConfigurationManager.shared.getBaseUrl()
+    }
+    
+    var parameters: [URLQueryItem] {
+        []
+    }
+    
+    var headers: Headers {
+        [:]
+    }
+    
+    var method: HTTPMethod {
+        return .get
     }
 }
 
