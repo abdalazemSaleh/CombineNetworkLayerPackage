@@ -19,7 +19,7 @@ public protocol EndPoint {
     func getURl() -> URL?
 }
 
-extension EndPoint {
+public extension EndPoint {
     var baseURL: String {
         NetworkConfigurationManager.shared.getBaseUrl()
     }
@@ -37,8 +37,8 @@ extension EndPoint {
     }
 }
 
-extension EndPoint {
-    public func getURl() -> URL? {
+public extension EndPoint {
+    func getURl() -> URL? {
         var component = URLComponents()
         component.scheme = "https"
         component.host = baseURL
