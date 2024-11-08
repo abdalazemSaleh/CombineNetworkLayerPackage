@@ -51,8 +51,6 @@ public extension LoggerProtocol {
             print("💡 \(key): \(value)")
         }
         
-        print("descrption \(response.description)")
-        
         if let data = data, let responseString = String(data: data, encoding: .utf8) {
             print(responseString)
         }
