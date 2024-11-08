@@ -17,6 +17,8 @@ public protocol Requestable {
 public class NetworkRequestable: Requestable {
     public var requestTimeOut: Float = 30
     
+    public init() { }
+    
     public func request<T>(_ req: RequestModel) -> AnyPublisher<T, NetworkError> where T : Codable {
         let sessionConfig = URLSessionConfiguration.default
         sessionConfig.timeoutIntervalForRequest = TimeInterval(req.requestTimeout ?? requestTimeOut)
