@@ -22,9 +22,14 @@ public class NetworkRequestable: Requestable {
     public func request<T>(_ req: RequestModel) -> AnyPublisher<T, NetworkError> where T : Codable {
         let sessionConfig = URLSessionConfiguration.default
         sessionConfig.timeoutIntervalForRequest = TimeInterval(req.requestTimeout ?? requestTimeOut)
-        
+                
+        guard let urlRequest = req.getURLRequest() else {
+            return Fail(error: NetworkError.badeRequest(code: 0, error: "Please check your request"))
+                .eraseToAnyPublisher()
+        }
+
         return URLSession.shared
-            .dataTaskPublisher(for: req.getURLRequest()!)
+            .dataTaskPublisher(for: urlRequest)
             .tryMap { output in
                 guard output.response is HTTPURLResponse else {
                     throw NetworkError.serverError(code: 0, error: "Server error")
