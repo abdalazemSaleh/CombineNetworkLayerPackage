@@ -43,13 +43,15 @@ public extension LoggerProtocol {
     
     func successLogger(request: URLRequest, response: HTTPURLResponse, data: Data?) {
         if let url = response.url?.absoluteString {
-            print("🔈 \(String(describing: request.httpMethod)) \(url)")
+            print("🔈 \(request.httpMethod ?? .localizedStringWithFormat("%@", "GET")) \(url)")
             print("🔈 Status code: \(response.statusCode)")
         }
         
         for (key, value) in response.allHeaderFields {
             print("💡 \(key): \(value)")
         }
+        
+        print("descrption \(response.description)")
         
         if let data = data, let responseString = String(data: data, encoding: .utf8) {
             print(responseString)
