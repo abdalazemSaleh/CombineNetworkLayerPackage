@@ -11,6 +11,7 @@ public class NetworkConfigurationManager: @unchecked Sendable {
     public static let shared = NetworkConfigurationManager()
     
     private(set) var environment: Environment = .development
+    private(set) var isLoggerEnabled: Bool = false
     private var baseURL: String = ""
     
     public func setEnvironment(_ environment: Environment) {
@@ -19,6 +20,10 @@ public class NetworkConfigurationManager: @unchecked Sendable {
     
     public func setBaseURL(_ url: String) {
         self.baseURL = url
+    }
+    
+    public func setLoggerEnabled(_ enabled: Bool) {
+        isLoggerEnabled = enabled
     }
     
     public func getBaseUrl() -> String {
