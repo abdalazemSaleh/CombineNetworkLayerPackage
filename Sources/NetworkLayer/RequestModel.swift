@@ -51,6 +51,6 @@ public struct RequestModel {
 
 extension Encodable {
     func encode() -> Data? {
-        try? JSONEncoder().encode(self)
+        try? JSONSerialization.data(withJSONObject: self, options: [])
     }
 }
