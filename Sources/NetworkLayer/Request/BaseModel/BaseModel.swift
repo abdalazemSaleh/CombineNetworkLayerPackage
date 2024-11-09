@@ -10,5 +10,5 @@ import Foundation
 public struct BaseModel<T: Codable>: Codable {
     public let status: Bool
     public let message: String
-    public let data: T
+    public let data: T?
 }
