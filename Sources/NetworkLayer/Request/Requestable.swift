@@ -12,7 +12,7 @@ public protocol Requestable {
     var logger: LoggerProtocol { get }
     var requestTimeOut: Float { get }
     
-    func request<T: Codable>(_ req: RequestModel) -> AnyPublisher<T, NetworkError>
+    func request<T: Codable>(_ req: RequestModel) -> AnyPublisher<BaseModel<T>, NetworkError>
 }
 
 public class NetworkRequestable: Requestable {
@@ -26,7 +26,7 @@ public class NetworkRequestable: Requestable {
         self.logger = logger
     }
     
-    public func request<T>(_ req: RequestModel) -> AnyPublisher<T, NetworkError> where T : Codable {
+    public func request<T>(_ req: RequestModel) -> AnyPublisher<BaseModel<T>, NetworkError> where T : Codable {
         let sessionConfig = URLSessionConfiguration.default
         sessionConfig.timeoutIntervalForRequest = TimeInterval(req.requestTimeout ?? requestTimeOut)
         
@@ -58,7 +58,7 @@ public class NetworkRequestable: Requestable {
                 }
                 return output.data
             }
-            .decode(type: T.self, decoder: JSONDecoder())
+            .decode(type: BaseModel<T>.self, decoder: JSONDecoder())
             .mapError { error in
                 NetworkError.invalidJSON(error: String(describing: error))
             }
