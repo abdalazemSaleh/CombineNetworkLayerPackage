@@ -44,6 +44,7 @@ public struct RequestModel {
         for header in endPoint.headers {
             request.addValue(header.value, forHTTPHeaderField: header.key)
         }
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         // Return Request
         return request
     }
