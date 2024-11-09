@@ -8,7 +8,7 @@
 import Foundation
 
 public struct BaseModel<T: Codable>: Codable {
-    let status: Bool
-    let message: String
-    let data: T
+    public let status: Bool
+    public let message: String
+    public let data: T
 }
