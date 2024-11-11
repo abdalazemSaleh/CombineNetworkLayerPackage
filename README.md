@@ -13,7 +13,7 @@ You can add this package to your project using Swift Package Manager, either thr
 - Enter the repository URL for this package:
 
 ```plaintext
-https://github.com/yourusername/your-repo.git
+https://github.com/abdalazemSaleh/CombineNetworkLayerPackage
 ```
 
 #### Method 2: Package.swift
@@ -22,6 +22,6 @@ If you manage dependencies using a `Package.swift` file, add this package as a d
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.10.0"))
+    .package(url: "https://github.com/abdalazemSaleh/CombineNetworkLayerPackage", .upToNextMajor(from: "5.10.0"))
 ]
 ```
