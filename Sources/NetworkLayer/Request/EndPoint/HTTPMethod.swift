@@ -11,9 +11,3 @@ public enum HTTPMethod: String {
     case put = "PUT"
     case delete = "DELETE"
 }
-
-public enum Environment: String, CaseIterable {
-    case development
-    case staging
-    case production
-}

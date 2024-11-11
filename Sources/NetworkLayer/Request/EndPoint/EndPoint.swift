@@ -7,8 +7,6 @@
 
 import Foundation
 
-public typealias Headers = [String: String]
-
 public protocol EndPoint {
     var baseURL: String { get }
     var path: String { get }
