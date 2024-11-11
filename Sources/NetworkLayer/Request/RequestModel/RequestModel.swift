@@ -60,7 +60,10 @@ public extension RequestModel {
             let boundary = "Boundary-\(UUID().uuidString)"
             request.addValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
             /// Upload Data with body in here
-            let body = createMultipartBody(with: documents, boundary: boundary)
+            var body = createMultipartBody(with: documents, boundary: boundary)
+                
+            body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+
             request.httpBody = body
         } else {
             request.httpBody = body
