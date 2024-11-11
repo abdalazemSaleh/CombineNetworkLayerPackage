@@ -28,9 +28,15 @@ public extension RequestModel {
                     body.append(data)
                     body.append("\r\n".data(using: .utf8)!)
                 }
+            case .body(let value):
+                body.append("--\(boundary)\r\n".data(using: .utf8)!)
+                body.append("Content-Disposition: form-data; name=\"\(key)\"\r\n".data(using: .utf8)!)
+                body.append("Content-Type: text/plain\r\n\r\n".data(using: .utf8)!)
+                body.append(value.data(using: .utf8)!)
+                body.append("\r\n".data(using: .utf8)!)
             }
         }
-                
+
         return body
     }
 }

@@ -10,4 +10,5 @@ import Foundation
 public enum DataType {
     case single(Data)
     case array([Data])
+    case body(String)
 }
