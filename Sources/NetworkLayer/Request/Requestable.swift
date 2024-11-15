@@ -71,7 +71,10 @@ public class NetworkRequestable: Requestable {
     }
 }
 
-class SessionObserver: NSObject, @unchecked Sendable, URLSessionDelegate {
+class SessionObserver: NSObject, @unchecked Sendable, URLSessionDelegate, URLSessionDownloadDelegate {
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
+        print("Download completed. File saved to: \(location)")
+    }
     
     var progressPublisher = PassthroughSubject<Double, Never>()
     
@@ -84,14 +87,7 @@ class SessionObserver: NSObject, @unchecked Sendable, URLSessionDelegate {
         let progress = Double(totalBytesSent) / Double(totalBytesExpectedToSend)
         progressPublisher.send(progress)
     }
-    
-    public func urlSession(_ session: URLSession,
-                           task: URLSessionTask,
-                           didReceive response: URLResponse,
-                           completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
-        completionHandler(.allow)
-    }
-    
+        
     public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         progressPublisher.send(completion: .finished)
     }
