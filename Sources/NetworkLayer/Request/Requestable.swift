@@ -19,6 +19,10 @@ public class NetworkRequestable: Requestable {
     
     public var logger: LoggerProtocol
     public var requestTimeOut: Float = 30
+    private let sessionObserver = SessionObserver()
+    public var progressPublisher: AnyPublisher<Double, Never> {
+        return sessionObserver.progressPublisher.eraseToAnyPublisher()
+    }
     
     private var networkConfigurationManager: NetworkConfigurationManager = .shared
     
@@ -38,8 +42,9 @@ public class NetworkRequestable: Requestable {
         if networkConfigurationManager.isLoggerEnabled {
             logger.logRequest(urlRequest)
         }
+        let session = URLSession(configuration: sessionConfig, delegate: sessionObserver, delegateQueue: nil)
         
-        return URLSession.shared
+        return session
             .dataTaskPublisher(for: urlRequest)
             .handleEvents(receiveOutput: { [weak self] output in
                 guard let self else { return }
@@ -63,5 +68,31 @@ public class NetworkRequestable: Requestable {
                 NetworkError.invalidJSON(error: String(describing: error))
             }
             .eraseToAnyPublisher()
+    }
+}
+
+class SessionObserver: NSObject, @unchecked Sendable, URLSessionDelegate {
+    
+    var progressPublisher = PassthroughSubject<Double, Never>()
+    
+    public func urlSession(_ session: URLSession,
+                           task: URLSessionTask,
+                           didSendBodyData bytesSent: Int64,
+                           totalBytesSent: Int64,
+                           totalBytesExpectedToSend: Int64) {
+        guard totalBytesExpectedToSend > 0 else { return }
+        let progress = Double(totalBytesSent) / Double(totalBytesExpectedToSend)
+        progressPublisher.send(progress)
+    }
+    
+    public func urlSession(_ session: URLSession,
+                           task: URLSessionTask,
+                           didReceive response: URLResponse,
+                           completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
+        completionHandler(.allow)
+    }
+    
+    public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        progressPublisher.send(completion: .finished)
     }
 }
