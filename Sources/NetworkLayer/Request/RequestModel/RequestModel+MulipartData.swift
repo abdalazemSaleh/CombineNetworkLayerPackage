@@ -13,7 +13,7 @@ public extension RequestModel {
         
         for (key, value) in documents {
             let strategy = value.getStrategy()
-            strategy.appendData(to: &body, key: key, value: value, boundary: boundary)
+            strategy.appendData(to: &body, key: key, boundary: boundary)
         }
 
         return body

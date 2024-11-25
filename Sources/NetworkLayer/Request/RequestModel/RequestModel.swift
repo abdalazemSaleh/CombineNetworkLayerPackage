@@ -52,7 +52,7 @@ public extension RequestModel {
         for header in endPoint.headers {
             request.addValue(header.value, forHTTPHeaderField: header.key)
         }
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
 
         // Add Body
         if let documents = documents {
@@ -66,6 +66,7 @@ public extension RequestModel {
 
             request.httpBody = body
         } else {
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             request.httpBody = body
         }
         

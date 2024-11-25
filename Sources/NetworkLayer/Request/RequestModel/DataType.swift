@@ -15,14 +15,14 @@ public enum DataType {
     
     func getStrategy() -> MultipartFormDataStrategy {
         switch self {
-        case .single:
-            return SingleDataStrategy()
-        case .array:
-            return ArrayDataStrategy()
-        case .body:
-            return BodyDataStrategy()
-        case .bodyArray:
-            return BodyArrayDataStrategy()
+        case .single(let data):
+            return SingleDataStrategy(data: data)
+        case .array(let data):
+            return ArrayDataStrategy(data: data)
+        case .body(let data):
+            return BodyDataStrategy(data: data)
+        case .bodyArray(let data):
+            return BodyArrayDataStrategy(data: data)
         }
     }
 }
