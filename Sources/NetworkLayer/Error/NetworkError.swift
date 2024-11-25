@@ -18,7 +18,7 @@ public enum NetworkError: Error, Equatable {
     case unKnownError(code: Int, error: String)
     case customError(error: String)
     
-    var description: String {
+    public var description: String {
         switch self {
         case .badURL(let error):
             return "Bad URL: \(error)"
