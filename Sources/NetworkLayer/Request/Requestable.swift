@@ -42,6 +42,7 @@ public class NetworkRequestable: Requestable {
         if networkConfigurationManager.isLoggerEnabled {
             logger.logRequest(urlRequest)
         }
+        
         let session = URLSession(configuration: sessionConfig, delegate: sessionObserver, delegateQueue: nil)
         
         return session
