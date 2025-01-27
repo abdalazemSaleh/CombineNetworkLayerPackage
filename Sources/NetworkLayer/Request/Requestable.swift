@@ -13,6 +13,7 @@ public protocol Requestable {
     var requestTimeOut: Float { get }
     
     func request<T: Codable>(_ req: RequestModel) -> AnyPublisher<BaseModel<T>, NetworkError>
+    func requestWithBase<T: Codable>(_ req: RequestModel) -> AnyPublisher<T, NetworkError>
 }
 
 public class NetworkRequestable: Requestable {
@@ -77,6 +78,56 @@ public class NetworkRequestable: Requestable {
             .eraseToAnyPublisher()
     }
 }
+
+public extension NetworkRequestable {
+    func requestWithBase<T>(_ req: RequestModel) -> AnyPublisher<T, NetworkError> where T : Decodable, T : Encodable {
+        let sessionConfig = URLSessionConfiguration.default
+        sessionConfig.timeoutIntervalForRequest = TimeInterval(req.requestTimeout ?? requestTimeOut)
+        
+        guard let urlRequest = req.getURLRequest() else {
+            return Fail(error: NetworkError.badeRequest(code: 0, error: "Please check your request"))
+                .eraseToAnyPublisher()
+        }
+        
+        if networkConfigurationManager.isLoggerEnabled {
+            logger.logRequest(urlRequest)
+        }
+        
+        let session = URLSession(configuration: sessionConfig, delegate: sessionObserver, delegateQueue: nil)
+        
+        return session
+            .dataTaskPublisher(for: urlRequest)
+            .handleEvents(receiveOutput: { [weak self] output in
+                guard let self else { return }
+                if networkConfigurationManager.isLoggerEnabled {
+                    logger.logResponse(urlRequest, response: output.response, data: output.data, error: nil)
+                }
+            }, receiveCompletion: { [weak self] completion in
+                guard let self else { return }
+                if case let .failure(error) = completion, networkConfigurationManager.isLoggerEnabled {
+                    logger.errorLogger(error: NetworkError.unKnownError(code: 0, error: error.localizedDescription))
+                }
+            })
+            .tryMap { output in
+                guard let httpResponse = output.response as? HTTPURLResponse else {
+                    throw NetworkError.serverError(code: 0, error: "Server error")
+                }
+                if httpResponse.statusCode == 401 {
+                    DispatchQueue.main.async {
+                        NetworkConfigurationManager.unAuthActionTriggerd.send()
+                    }
+                    throw NetworkError.unauthorized(code: 1, error: "Un Auth User")
+                }
+                return output.data
+            }
+            .decode(type: T.self, decoder: JSONDecoder())
+            .mapError { error in
+                NetworkError.invalidJSON(error: String(describing: error))
+            }
+            .eraseToAnyPublisher()
+    }
+}
+
 
 class SessionObserver: NSObject, @unchecked Sendable, URLSessionDelegate, URLSessionDownloadDelegate {
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
