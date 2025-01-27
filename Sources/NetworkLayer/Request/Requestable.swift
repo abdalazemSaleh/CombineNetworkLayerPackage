@@ -59,8 +59,14 @@ public class NetworkRequestable: Requestable {
                 }
             })
             .tryMap { output in
-                guard output.response is HTTPURLResponse else {
+                guard let httpResponse = output.response as? HTTPURLResponse else {
                     throw NetworkError.serverError(code: 0, error: "Server error")
+                }
+                if httpResponse.statusCode == 401 {
+                    DispatchQueue.main.async {
+                        NetworkConfigurationManager.unAuthActionTriggerd.send()
+                    }
+                    throw NetworkError.unauthorized(code: 1, error: "Un Auth User")
                 }
                 return output.data
             }

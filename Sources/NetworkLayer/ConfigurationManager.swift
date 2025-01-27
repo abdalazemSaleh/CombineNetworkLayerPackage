@@ -6,9 +6,11 @@
 //
 
 import Foundation
+import Combine
 
 public class NetworkConfigurationManager: @unchecked Sendable {
     public static let shared = NetworkConfigurationManager()
+    @MainActor public static let unAuthActionTriggerd = PassthroughSubject<Void, Never>()
     
     private(set) var isLoggerEnabled: Bool = false
     private var baseURL: String = ""
