@@ -9,19 +9,17 @@ import Foundation
 
 public protocol EndPoint {
     var baseURL: String { get }
+    var clientName: String { get }
     var path: String { get }
     var parameters: [URLQueryItem] { get }
     var headers: Headers { get }
     var method: HTTPMethod { get }
     
-    func getURl() -> URL?
+    func getBaseURL() async -> String
+    func getURl() async -> URL?
 }
 
 public extension EndPoint {
-    var baseURL: String {
-        NetworkConfigurationManager.shared.getBaseUrl()
-    }
-        
     var parameters: [URLQueryItem] {
         []
     }
@@ -33,17 +31,21 @@ public extension EndPoint {
     var method: HTTPMethod {
         return .get
     }
-    
 }
 
 public extension EndPoint {
-    func getURl() -> URL? {
+    func getURl() async -> URL? {
         var component = URLComponents()
         component.scheme = "https"
+        let baseURL = await getBaseURL()
         component.host = baseURL
-        let requestPath = NetworkConfigurationManager.shared.getCompletePath()
-        component.path = requestPath + "/" + path
+        let requestPath = await NetworkConfigurationManager.shared.getCompletePath()
+        component.path = requestPath + "/" + clientName + "/" + path
         component.queryItems = parameters
         return component.url
+    }
+    
+    func getBaseURL() async -> String {
+        return await NetworkConfigurationManager.shared.getBaseUrl()
     }
 }

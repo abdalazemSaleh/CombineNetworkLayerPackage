@@ -28,11 +28,11 @@ public class APIRequestHandler: AsyncRequestable {
         let sessionConfig = URLSessionConfiguration.default
         sessionConfig.timeoutIntervalForRequest = TimeInterval(req.requestTimeout ?? requestTimeOut)
         
-        guard let urlRequest = req.getURLRequest() else {
+        guard let urlRequest = await req.getURLRequest() else {
             throw NetworkError.badeRequest(code: 0, error: "Please check your request")
         }
         
-        if networkConfigurationManager.isLoggerEnabled {
+        if await networkConfigurationManager.isLoggerEnabled {
             logger.logRequest(urlRequest)
         }
         
@@ -41,7 +41,7 @@ public class APIRequestHandler: AsyncRequestable {
         do {
             let (data, response) = try await session.data(for: urlRequest)
             
-            if networkConfigurationManager.isLoggerEnabled {
+            if await networkConfigurationManager.isLoggerEnabled {
                 logger.logResponse(urlRequest, response: response, data: data, error: nil)
             }
             
@@ -57,7 +57,7 @@ public class APIRequestHandler: AsyncRequestable {
             return decodedResponse
             
         } catch {
-            if networkConfigurationManager.isLoggerEnabled {
+            if await networkConfigurationManager.isLoggerEnabled {
                 logger.errorLogger(error: NetworkError.unKnownError(code: 0, error: error.localizedDescription))
             }
             throw NetworkError.invalidJSON(error: String(describing: error))
@@ -70,11 +70,11 @@ public extension APIRequestHandler {
         let sessionConfig = URLSessionConfiguration.default
         sessionConfig.timeoutIntervalForRequest = TimeInterval(req.requestTimeout ?? requestTimeOut)
         
-        guard let urlRequest = req.getURLRequest() else {
+        guard let urlRequest = await req.getURLRequest() else {
             throw NetworkError.badeRequest(code: 0, error: "Please check your request")
         }
         
-        if networkConfigurationManager.isLoggerEnabled {
+        if await networkConfigurationManager.isLoggerEnabled {
             logger.logRequest(urlRequest)
         }
         
@@ -83,7 +83,7 @@ public extension APIRequestHandler {
         do {
             let (data, response) = try await session.data(for: urlRequest)
             
-            if networkConfigurationManager.isLoggerEnabled {
+            if await networkConfigurationManager.isLoggerEnabled {
                 logger.logResponse(urlRequest, response: response, data: data, error: nil)
             }
             
@@ -99,7 +99,7 @@ public extension APIRequestHandler {
             return decodedResponse
             
         } catch {
-            if networkConfigurationManager.isLoggerEnabled {
+            if await networkConfigurationManager.isLoggerEnabled {
                 logger.errorLogger(error: NetworkError.unKnownError(code: 0, error: error.localizedDescription))
             }
             throw NetworkError.invalidJSON(error: String(describing: error))

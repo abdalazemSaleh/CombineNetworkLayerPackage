@@ -39,8 +39,8 @@ public struct RequestModel {
 }
 
 public extension RequestModel {
-    func getURLRequest() -> URLRequest? {
-        guard let url = endPoint.getURl() else { return nil }
+    func getURLRequest() async -> URLRequest? {
+        guard let url = await endPoint.getURl() else { return nil }
         
         // Create Request
         var request: URLRequest = URLRequest(url: url)

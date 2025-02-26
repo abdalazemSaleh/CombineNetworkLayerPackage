@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-public class NetworkConfigurationManager: @unchecked Sendable {
+public actor NetworkConfigurationManager: @unchecked Sendable {
     public static let shared = NetworkConfigurationManager()
     @MainActor public static let unAuthActionTriggerd = PassthroughSubject<Void, Never>()
     
@@ -29,11 +29,7 @@ public class NetworkConfigurationManager: @unchecked Sendable {
     public func setApiVersion(_ version: String = "") {
         self.apiVersion = version
     }
-    
-    public func setClientName(_ clientName: String) {
-        self.clientName = clientName
-    }
-    
+        
     public func setLoggerEnabled(_ enabled: Bool) {
         isLoggerEnabled = enabled
     }
@@ -49,12 +45,8 @@ public class NetworkConfigurationManager: @unchecked Sendable {
     public func getApiVersion() -> String {
         return apiVersion
     }
-    
-    public func getClientName() -> String {
-        return clientName
-    }
-    
+        
     public func getCompletePath() -> String {
-        return "/" + getResourcePath() + "/" + getApiVersion() + "/" + getClientName()
+        return "/" + getResourcePath() + "/" + getApiVersion()
     }
 }
