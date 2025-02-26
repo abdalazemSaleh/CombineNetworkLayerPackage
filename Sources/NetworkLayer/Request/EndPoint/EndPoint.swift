@@ -8,7 +8,6 @@
 import Foundation
 
 public protocol EndPoint {
-    var baseURL: String { get }
     var clientName: String { get }
     var path: String { get }
     var parameters: [URLQueryItem] { get }
