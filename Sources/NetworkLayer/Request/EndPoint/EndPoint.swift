@@ -9,8 +9,7 @@ import Foundation
 
 public protocol EndPoint {
     var baseURL: String { get }
-    var path: String { get } /// deprecated in v1.6.1
-    var urlPathOptions: PathType { get }
+    var path: String { get }
     var parameters: [URLQueryItem] { get }
     var headers: Headers { get }
     var method: HTTPMethod { get }
@@ -22,15 +21,7 @@ public extension EndPoint {
     var baseURL: String {
         NetworkConfigurationManager.shared.getBaseUrl()
     }
-    
-    var path: String {
-        ""
-    }
-    
-    var urlPathOptions: PathType {
-        .path(path: path)
-    }
-    
+        
     var parameters: [URLQueryItem] {
         []
     }
@@ -42,6 +33,7 @@ public extension EndPoint {
     var method: HTTPMethod {
         return .get
     }
+    
 }
 
 public extension EndPoint {
@@ -49,23 +41,9 @@ public extension EndPoint {
         var component = URLComponents()
         component.scheme = "https"
         component.host = baseURL
-        component.path = path.isEmpty ? path : urlPathOptions.getPath()
+        let requestPath = NetworkConfigurationManager.shared.getCompletePath()
+        component.path = "/" + requestPath + path
         component.queryItems = parameters
         return component.url
-    }
-}
-
-public enum PathType {
-    case path(path: String)
-    case withCompletePath(path: String)
-    
-    func getPath() -> String {
-        switch self {
-        case .path(let path):
-            return path
-        case .withCompletePath(let endPoint):
-            let requestPath = NetworkConfigurationManager.shared.getCompletePath()
-            return requestPath + endPoint
-        }
     }
 }
