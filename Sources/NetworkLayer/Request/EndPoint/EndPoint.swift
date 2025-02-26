@@ -42,7 +42,7 @@ public extension EndPoint {
         component.scheme = "https"
         component.host = baseURL
         let requestPath = NetworkConfigurationManager.shared.getCompletePath()
-        component.path = "/" + requestPath + path
+        component.path = requestPath + path
         component.queryItems = parameters
         return component.url
     }

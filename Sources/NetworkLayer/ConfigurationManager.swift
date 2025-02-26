@@ -16,17 +16,22 @@ public class NetworkConfigurationManager: @unchecked Sendable {
     private var baseURL: String = ""
     private var resourcePath: String = ""
     private var apiVersion: String = ""
+    private var clientName: String = ""
 
     public func setBaseURL(_ url: String) {
         self.baseURL = url
     }
     
-    public func setResourcePath(_ path: String, version: String = "") {
+    public func setResourcePath(_ path: String) {
         self.resourcePath = path
     }
     
     public func setApiVersion(_ version: String = "") {
         self.apiVersion = version
+    }
+    
+    public func setClientName(_ clientName: String) {
+        self.clientName = clientName
     }
     
     public func setLoggerEnabled(_ enabled: Bool) {
@@ -45,7 +50,11 @@ public class NetworkConfigurationManager: @unchecked Sendable {
         return apiVersion
     }
     
+    public func getClientName() -> String {
+        return clientName
+    }
+    
     public func getCompletePath() -> String {
-        return "/" + getResourcePath() + "/" + getApiVersion()
+        return "/" + getResourcePath() + "/" + getApiVersion() + "/" + getClientName()
     }
 }
