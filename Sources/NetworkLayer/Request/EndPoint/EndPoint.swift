@@ -27,6 +27,10 @@ public extension EndPoint {
         ""
     }
     
+    var urlPathOptions: PathType {
+        .path(path: path)
+    }
+    
     var parameters: [URLQueryItem] {
         []
     }
