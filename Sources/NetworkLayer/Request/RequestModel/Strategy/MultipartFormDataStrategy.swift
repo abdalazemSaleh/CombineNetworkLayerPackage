@@ -24,7 +24,6 @@ class SingleDataStrategy: MultipartFormDataStrategy {
         body.append("Content-Type: image/png\r\n\r\n".data(using: .utf8)!)
         body.append(data)
         body.append("\r\n".data(using: .utf8)!)
-        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
     }
 }
 
@@ -43,7 +42,6 @@ class ArrayDataStrategy: MultipartFormDataStrategy {
             body.append("Content-Type: image/png\r\n\r\n".data(using: .utf8)!)
             body.append(data)
             body.append("\r\n".data(using: .utf8)!)
-            body.append("--\(boundary)--\r\n".data(using: .utf8)!)
         }
     }
 }
@@ -61,7 +59,6 @@ class BodyDataStrategy: MultipartFormDataStrategy {
         body.append("Content-Type: text/plain\r\n\r\n".data(using: .utf8)!)
         body.append(data.data(using: .utf8)!)
         body.append("\r\n".data(using: .utf8)!)
-        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
     }
 }
 
