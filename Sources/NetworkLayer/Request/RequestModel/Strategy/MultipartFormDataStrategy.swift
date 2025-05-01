@@ -36,7 +36,7 @@ class ArrayDataStrategy: MultipartFormDataStrategy {
 
     func appendData(to body: inout Data, key: String, boundary: String) {
         for (index, data) in data.enumerated() {
-            let fieldName = "\(key)[\(index)]"
+            let fieldName = "\(key)[]"
             body.append("--\(boundary)\r\n".data(using: .utf8)!)
             body.append("Content-Disposition: form-data; name=\"\(fieldName)\"; filename=\"\(key).png\"\r\n".data(using: .utf8)!)
             body.append("Content-Type: image/png\r\n\r\n".data(using: .utf8)!)
@@ -71,7 +71,7 @@ class BodyArrayDataStrategy: MultipartFormDataStrategy {
 
     func appendData(to body: inout Data, key: String, boundary: String) {
         for (index, data) in data.enumerated() {
-            let fieldName = "\(key)[\(index)]"
+            let fieldName = "\(key)[]"
             body.append("--\(boundary)\r\n".data(using: .utf8)!)
             body.append("Content-Disposition: form-data; name=\"\(fieldName)\"\r\n".data(using: .utf8)!)
             body.append("Content-Type: text/plain\r\n\r\n".data(using: .utf8)!)
