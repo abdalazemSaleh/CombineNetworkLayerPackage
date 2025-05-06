@@ -15,7 +15,7 @@ public actor NetworkConfigurationManager: @unchecked Sendable {
     private(set) var isLoggerEnabled: Bool = false
     private var baseURL: String = ""
     private var resourcePath: String = ""
-    private var apiVersion: String = ""
+    private var apiVersion: String?
     private var clientName: String = ""
 
     public func setBaseURL(_ url: String) {
@@ -42,11 +42,15 @@ public actor NetworkConfigurationManager: @unchecked Sendable {
         return resourcePath
     }
     
-    public func getApiVersion() -> String {
+    public func getApiVersion() -> String? {
         return apiVersion
     }
         
     public func getCompletePath() -> String {
-        return "/" + getResourcePath() + "/" + getApiVersion()
+        var completePath = "/" + getResourcePath()
+        if let apiVersion = getApiVersion() {
+         completePath +=  "/" + apiVersion
+        }
+        return completePath
     }
 }
