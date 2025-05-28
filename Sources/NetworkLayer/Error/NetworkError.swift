@@ -21,23 +21,23 @@ public enum NetworkError: Error, Equatable {
     public var description: String {
         switch self {
         case .badURL(let error):
-            return "Bad URL: \(error)"
+            return "يوجد خطاء ما"
         case .apiError(let code, let error):
-            return "API Error - Code: \(code), Error: \(error)"
+            return "يوجد خطاء ما"
         case .invalidJSON(let error):
-            return "Invalid JSON: \(error)"
+            return "يوجد خطاء ما"
         case .unauthorized(let code, let error):
-            return "Unauthorized - Code: \(code), Error: \(error)"
+            return "يوجد خطاء ما"
         case .badeRequest(let code, let error):
-            return "Bad Request - Code: \(code), Error: \(error)"
+            return "يوجد خطاء ما"
         case .serverError(let code, let error):
-            return "Server Error - Code: \(code), Error: \(error)"
+            return "يوجد خطاء ما"
         case .noResponse(let code, let error):
-            return "No Response - Code: \(code), Error: \(error)"
+            return "يوجد خطاء ما"
         case .unableToParseData(let error):
-            return "Unable to Parse Data: \(error)"
+            return "يوجد خطاء ما"
         case .unKnownError(let code, let error):
-            return "Unknown Error - Code: \(code), Error: \(error)"
+            return "يوجد خطاء ما"
         case .customError(let error):
             return error
         }
