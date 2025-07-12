@@ -17,6 +17,7 @@ public actor NetworkConfigurationManager: @unchecked Sendable {
     private var resourcePath: String = ""
     private var apiVersion: String?
     private var clientName: String = ""
+    private var unSafeBaseURL: String?
 
     public func setBaseURL(_ url: String) {
         self.baseURL = url
@@ -34,6 +35,10 @@ public actor NetworkConfigurationManager: @unchecked Sendable {
         isLoggerEnabled = enabled
     }
     
+    public func setUnSafeBaseURL(_ url: String) {
+        self.unSafeBaseURL = url
+    }
+    
     public func getBaseUrl() -> String {
         return baseURL
     }
@@ -44,6 +49,10 @@ public actor NetworkConfigurationManager: @unchecked Sendable {
     
     public func getApiVersion() -> String? {
         return apiVersion
+    }
+    
+    public func getUnSafeBaseURL() -> String? {
+        return unSafeBaseURL
     }
         
     public func getCompletePath() -> String {

@@ -34,14 +34,20 @@ public extension EndPoint {
 
 public extension EndPoint {
     func getURl() async -> URL? {
-        var component = URLComponents()
-        component.scheme = "https"
-        let baseURL = await getBaseURL()
-        component.host = baseURL
-        let requestPath = await NetworkConfigurationManager.shared.getCompletePath()
-        component.path = requestPath + "/" + clientName + "/" + path
-        component.queryItems = parameters
-        return component.url
+        if var url = await NetworkConfigurationManager.shared.getUnSafeBaseURL() {
+            let path = "/" + clientName + "/" + path
+            url += path
+            return URL(string: url)
+        } else {
+            var component = URLComponents()
+            component.scheme = "https"
+            let baseURL = await getBaseURL()
+            component.host = baseURL
+            let requestPath = await NetworkConfigurationManager.shared.getCompletePath()
+            component.path = requestPath + "/" + clientName + "/" + path
+            component.queryItems = parameters
+            return component.url
+        }
     }
     
     func getBaseURL() async -> String {
