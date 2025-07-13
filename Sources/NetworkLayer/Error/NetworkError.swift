@@ -5,7 +5,6 @@
 //  Created by Abdalazem Saleh on 05/11/2024.
 //
 
-
 public enum NetworkError: Error, Equatable {
     case badURL(error: String)
     case apiError(code: Int, error: String)
@@ -40,6 +39,20 @@ public enum NetworkError: Error, Equatable {
             return "Unknown Error - Code: \(code), Error: \(error)"
         case .customError(let error):
             return error
+        }
+    }
+    
+    public var code: Int? {
+        switch self {
+        case .apiError(let code, _),
+             .unauthorized(let code, _),
+             .badeRequest(let code, _),
+             .serverError(let code, _),
+             .noResponse(let code, _),
+             .unKnownError(let code, _):
+            return code
+        default:
+            return nil
         }
     }
 }

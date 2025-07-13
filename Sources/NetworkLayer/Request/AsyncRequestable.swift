@@ -49,7 +49,11 @@ public class APIRequestHandler: AsyncRequestable {
                 throw NetworkError.serverError(code: 0, error: "Server error")
             }
             
-            guard (200...499).contains(httpResponse.statusCode) else {
+            if httpResponse.statusCode == 401 {
+                throw NetworkError.unauthorized(code: httpResponse.statusCode, error: "User unauthorized.")
+            }
+            
+            guard (200...299).contains(httpResponse.statusCode) else {
                 throw NetworkError.serverError(code: httpResponse.statusCode, error: "HTTP Error: \(httpResponse.statusCode)")
             }
             
