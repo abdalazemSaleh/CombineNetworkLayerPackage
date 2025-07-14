@@ -15,7 +15,7 @@ public enum NetworkError: Error, Equatable {
     case noResponse(code: Int, error: String)
     case unableToParseData(error: String)
     case unKnownError(code: Int, error: String)
-    case customError(error: String)
+    case customError(code: Int, error: String)
     
     public var description: String {
         switch self {
@@ -37,7 +37,7 @@ public enum NetworkError: Error, Equatable {
             return "Unable to Parse Data: \(error)"
         case .unKnownError(let code, let error):
             return "Unknown Error - Code: \(code), Error: \(error)"
-        case .customError(let error):
+        case .customError(_, let error):
             return error
         }
     }
@@ -49,7 +49,8 @@ public enum NetworkError: Error, Equatable {
              .badeRequest(let code, _),
              .serverError(let code, _),
              .noResponse(let code, _),
-             .unKnownError(let code, _):
+             .unKnownError(let code, _),
+             .customError(let code, _):
             return code
         default:
             return nil

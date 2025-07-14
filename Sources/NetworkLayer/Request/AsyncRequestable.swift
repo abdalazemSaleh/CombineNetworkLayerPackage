@@ -37,7 +37,8 @@ public class APIRequestHandler: AsyncRequestable {
         }
         
         let session = URLSession(configuration: sessionConfig)
-        
+        var statusCode: Int = 0
+
         do {
             let (data, response) = try await session.data(for: urlRequest)
             
@@ -53,6 +54,8 @@ public class APIRequestHandler: AsyncRequestable {
                 throw NetworkError.unauthorized(code: httpResponse.statusCode, error: "User unauthorized.")
             }
             
+            statusCode = httpResponse.statusCode
+            
             guard (200...299).contains(httpResponse.statusCode) else {
                 throw NetworkError.serverError(code: httpResponse.statusCode, error: "HTTP Error: \(httpResponse.statusCode)")
             }
@@ -64,7 +67,7 @@ public class APIRequestHandler: AsyncRequestable {
             if await networkConfigurationManager.isLoggerEnabled {
                 logger.errorLogger(error: NetworkError.unKnownError(code: 0, error: error.localizedDescription))
             }
-            throw NetworkError.invalidJSON(error: String(describing: error))
+            throw NetworkError.customError(code: statusCode, error: String(describing: error))
         }
     }
 }
