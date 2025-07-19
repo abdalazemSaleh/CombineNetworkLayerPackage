@@ -51,13 +51,17 @@ public class APIRequestHandler: AsyncRequestable {
             }
             
             if httpResponse.statusCode == 401 {
-                throw NetworkError.unauthorized(code: httpResponse.statusCode, error: "User unauthorized.")
+                let errorMessage = (try? JSONDecoder().decode(ErrorResponse.self, from: data))?.message
+                    ?? "User unauthorized."
+                throw NetworkError.unauthorized(code: httpResponse.statusCode, error: errorMessage)
             }
             
             statusCode = httpResponse.statusCode
             
             guard (200...299).contains(httpResponse.statusCode) else {
-                throw NetworkError.serverError(code: httpResponse.statusCode, error: "HTTP Error: \(httpResponse.statusCode)")
+                let errorMessage = (try? JSONDecoder().decode(ErrorResponse.self, from: data))?.message
+                    ?? "HTTP Error: \(httpResponse.statusCode)"
+                throw NetworkError.serverError(code: httpResponse.statusCode, error: errorMessage)
             }
             
             let decodedResponse = try JSONDecoder().decode(BaseModel<T>.self, from: data)
